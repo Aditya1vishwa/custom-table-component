@@ -2,7 +2,7 @@
 
 import { type ColumnDef } from "@tanstack/react-table"
 import type { User } from "@/types"
-import { StatusSelect } from "@/components/data-table/status-select"
+import { StatusSelect } from "@/components/status-select"
 
 export const usersColumns: ColumnDef<User, unknown>[] = [
     {

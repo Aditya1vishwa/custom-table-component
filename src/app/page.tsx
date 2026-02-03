@@ -1,4 +1,5 @@
 "use client"
+import * as React from "react"
 import { useQuery } from "@tanstack/react-query"
 import { useDebounce } from "@/hooks/use-debounce"
 import { tableStateToParams } from "@/lib/table-utils"
@@ -23,7 +24,7 @@ const PAGE_SIZE_OPTIONS = [10, 20, 50, 200] as const
 
 
 
-export default function UsersPage() {
+function UsersContent() {
 
   const [tableState, setTableState] = useTableState({
     defaultLimit: 10,
@@ -144,5 +145,13 @@ export default function UsersPage() {
         }
       />
     </main>
+  )
+}
+
+export default function UsersPage() {
+  return (
+    <React.Suspense fallback={<div className="p-8 text-center text-muted-foreground">Loading...</div>}>
+      <UsersContent />
+    </React.Suspense>
   )
 }
