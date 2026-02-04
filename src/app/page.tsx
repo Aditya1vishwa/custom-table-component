@@ -1,9 +1,8 @@
 "use client"
-import * as React from "react"
+import { Suspense } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { useDebounce } from "@/hooks/use-debounce"
+import { useDebounce, useTableState } from "@/hooks"
 import { tableStateToParams } from "@/lib/table-utils"
-import { useTableState } from "@/hooks/use-table-state"
 import { fetchUsers } from "@/lib/api/users"
 import { ServerDataTable } from "@/components/data-table"
 import { usersColumns } from "./columns"
@@ -18,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { ChevronDown, Download } from "lucide-react"
 import type { User } from "@/types"
+
 
 const FILTER_PARAM_KEYS = ["status", "role"] as const
 const PAGE_SIZE_OPTIONS = [10, 20, 50, 200] as const
@@ -150,8 +150,8 @@ function UsersContent() {
 
 export default function UsersPage() {
   return (
-    <React.Suspense fallback={<div className="p-8 text-center text-muted-foreground">Loading...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Loading...</div>}>
       <UsersContent />
-    </React.Suspense>
+    </Suspense>
   )
 }

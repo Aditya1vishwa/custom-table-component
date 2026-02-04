@@ -8,7 +8,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useToast } from "@/hooks/use-toast"
+import { toast } from "sonner"
 import type { User } from "@/types"
 
 interface StatusSelectProps {
@@ -17,7 +17,7 @@ interface StatusSelectProps {
 
 export function StatusSelect({ row }: StatusSelectProps) {
     const queryClient = useQueryClient()
-    const { toast } = useToast()
+
 
     const { mutate, isPending } = useMutation({
         mutationFn: async (newStatus: string) => {
@@ -37,16 +37,13 @@ export function StatusSelect({ row }: StatusSelectProps) {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["users"] })
-            toast({
-                title: "Status updated",
+            toast.success("Status updated", {
                 description: `User ${row.name}'s status has been updated.`,
             })
         },
         onError: () => {
-            toast({
-                title: "Error",
+            toast.error("Error", {
                 description: "Failed to update status. Please try again.",
-                variant: "destructive",
             })
         },
     })

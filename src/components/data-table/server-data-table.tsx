@@ -257,14 +257,14 @@ export function ServerDataTable<TData>({
         </div>
       )}
 
-      <div className="relative max-w-full overflow-x-auto rounded-md border">
+      <div className="relative max-w-full overflow-x-auto rounded-xl border shadow-md bg-card">
         {isFetching && !isLoading && (
           <div className="absolute inset-0 z-10 flex items-center justify-center rounded-md bg-background/60">
             <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
         )}
         <Table>
-          <TableHeader className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <TableHeader className="bg-gradient-to-r from-muted/40 via-muted/20 to-muted/40 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {expandableRowRender && <TableHead className="w-8" />}
@@ -325,11 +325,7 @@ export function ServerDataTable<TData>({
                             className="h-6 w-6"
                             onClick={() => toggleExpanded(rowId)}
                           >
-                            {isExpanded ? (
-                              <ChevronDown className="h-4 w-4" />
-                            ) : (
-                              <ChevronRight className="h-4 w-4" />
-                            )}
+                            <ChevronRight className={cn("h-4 w-4 transition-transform duration-200", isExpanded && "rotate-90")} />
                           </Button>
                         </TableCell>
                       )}
@@ -343,7 +339,7 @@ export function ServerDataTable<TData>({
                       <TableRow>
                         <TableCell
                           colSpan={effectiveColumns.length + 1}
-                          className="bg-muted/30 p-0"
+                          className="bg-muted/10 p-0 shadow-inner"
                         >
                           {expandableRowRender(row)}
                         </TableCell>
