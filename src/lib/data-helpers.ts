@@ -5,12 +5,22 @@ export interface UserFilterParams {
     search?: string
     status?: string
     role?: string
+    /** ISO date string (YYYY-MM-DD) for created-at range start */
+    dateFrom?: string
+    /** ISO date string (YYYY-MM-DD) for created-at range end */
+    dateTo?: string
     sortBy?: string
     sortOrder?: "asc" | "desc"
 }
 
+function parseDateOnly(isoDate: string): number {
+    const d = new Date(isoDate)
+    d.setHours(0, 0, 0, 0)
+    return d.getTime()
+}
+
 export function getFilteredUsers(params: UserFilterParams): User[] {
-    const { search, status, role, sortBy = "name", sortOrder = "asc" } = params
+    const { search, status, role, dateFrom, dateTo, sortBy = "name", sortOrder = "asc" } = params
 
     let list = [...MOCK_USERS]
 
@@ -33,6 +43,17 @@ export function getFilteredUsers(params: UserFilterParams): User[] {
 
     if (role) {
         list = list.filter((u) => u.role === role)
+    }
+
+    if (dateFrom || dateTo) {
+        const fromTime = dateFrom ? parseDateOnly(dateFrom) : -Infinity
+        const toTime = dateTo
+            ? parseDateOnly(dateTo) + 24 * 60 * 60 * 1000 - 1
+            : Infinity
+        list = list.filter((u) => {
+            const created = new Date(u.createdAt).getTime()
+            return created >= fromTime && created <= toTime
+        })
     }
 
     list.sort((a, b) => {

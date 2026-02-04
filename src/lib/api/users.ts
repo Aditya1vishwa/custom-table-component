@@ -16,6 +16,10 @@ export async function fetchUsers(
     searchParams.set("filter_status", String(params.filters.status))
   if (params.filters.role != null && params.filters.role !== "")
     searchParams.set("filter_role", String(params.filters.role))
+  if (params.filters.dateFrom != null && params.filters.dateFrom !== "")
+    searchParams.set("filter_dateFrom", String(params.filters.dateFrom))
+  if (params.filters.dateTo != null && params.filters.dateTo !== "")
+    searchParams.set("filter_dateTo", String(params.filters.dateTo))
 
   const res = await fetch(`/api/users?${searchParams.toString()}`)
   if (!res.ok) throw new Error("Failed to fetch users")

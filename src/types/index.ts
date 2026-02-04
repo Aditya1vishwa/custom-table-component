@@ -16,9 +16,17 @@ export interface User {
     createdAt: string | Date
 }
 
+export type DateRangeFilter = {
+    from: string | null
+    to: string | null
+}
+
 export type UsersTableFiltersProps = {
     status: string | null
     role: string | null
+    dateFrom: string | null
+    dateTo: string | null
     onStatusChange: (status: string | null) => void
     onRoleChange: (role: string | null) => void
+    onDateRangeChange: (range: DateRangeFilter) => void
 }

@@ -8,13 +8,17 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
+import { DateRangePicker } from "@/components/date-range-picker"
 import type { UsersTableFiltersProps } from "@/types"
 
 export function UsersTableFilters({
     status,
     role,
+    dateFrom,
+    dateTo,
     onStatusChange,
     onRoleChange,
+    onDateRangeChange,
 }: UsersTableFiltersProps) {
     return (
         <div className="flex flex-wrap items-center gap-4">
@@ -55,6 +59,17 @@ export function UsersTableFilters({
                         <SelectItem value="viewer">Viewer</SelectItem>
                     </SelectContent>
                 </Select>
+            </div>
+            <div className="flex items-center gap-2">
+                <Label className="text-sm text-muted-foreground whitespace-nowrap">
+                    Created
+                </Label>
+                <DateRangePicker
+                    dateFrom={dateFrom}
+                    dateTo={dateTo}
+                    onRangeChange={onDateRangeChange}
+                    placeholder="Created date range"
+                />
             </div>
         </div>
     )

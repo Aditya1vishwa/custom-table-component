@@ -8,6 +8,7 @@ import {
   useState,
   type ChangeEvent,
 } from "react"
+
 import {
   flexRender,
   getCoreRowModel,
@@ -17,7 +18,9 @@ import {
   type RowSelectionState,
   type VisibilityState,
 } from "@tanstack/react-table"
+
 import type { ServerDataTableProps, SelectionColumnProps } from "./types"
+
 import {
   Table,
   TableBody,
@@ -26,6 +29,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ServerPagination } from "./server-pagination"

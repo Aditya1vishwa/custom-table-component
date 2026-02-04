@@ -1,5 +1,6 @@
 "use client"
 import { Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { useDebounce, useTableState } from "@/hooks"
 import { tableStateToParams } from "@/lib/table-utils"
@@ -19,7 +20,7 @@ import { ChevronDown, Download } from "lucide-react"
 import type { User } from "@/types"
 
 
-const FILTER_PARAM_KEYS = ["status", "role"] as const
+const FILTER_PARAM_KEYS = ["status", "role", "dateFrom", "dateTo"] as const
 const PAGE_SIZE_OPTIONS = [10, 20, 50, 200] as const
 
 
@@ -32,6 +33,7 @@ function UsersContent() {
     persistColumnVisibility: true,
   })
 
+  const searchParams = useSearchParams()
   const debouncedSearch = useDebounce(tableState.search, 300)
   const params = tableStateToParams({ ...tableState, search: debouncedSearch })
   const { data, isLoading, isFetching, refetch, error } = useQuery({
@@ -47,6 +49,8 @@ function UsersContent() {
       <UsersTableFilters
         status={(tableState.filters.status as string) ?? null}
         role={(tableState.filters.role as string) ?? null}
+        dateFrom={(tableState.filters.dateFrom as string) ?? null}
+        dateTo={(tableState.filters.dateTo as string) ?? null}
         onStatusChange={(value) =>
           setTableState({
             filters: { ...tableState.filters, status: value ?? null },
@@ -56,6 +60,16 @@ function UsersContent() {
         onRoleChange={(value) =>
           setTableState({
             filters: { ...tableState.filters, role: value ?? null },
+            page: 1,
+          })
+        }
+        onDateRangeChange={({ from, to }) =>
+          setTableState({
+            filters: {
+              ...tableState.filters,
+              dateFrom: from ?? null,
+              dateTo: to ?? null,
+            },
             page: 1,
           })
         }
@@ -71,7 +85,7 @@ function UsersContent() {
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem
             onClick={() => {
-              const exportParams = new URLSearchParams(params.toString())
+              const exportParams = new URLSearchParams(searchParams.toString())
               exportParams.set("format", "csv")
               window.location.href = `/api/users/export?${exportParams.toString()}`
             }}
@@ -80,7 +94,7 @@ function UsersContent() {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              const exportParams = new URLSearchParams(params.toString())
+              const exportParams = new URLSearchParams(searchParams.toString())
               exportParams.set("format", "xlsx")
               window.location.href = `/api/users/export?${exportParams.toString()}`
             }}
@@ -89,7 +103,7 @@ function UsersContent() {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              const exportParams = new URLSearchParams(params.toString())
+              const exportParams = new URLSearchParams(searchParams.toString())
               exportParams.set("format", "pdf")
               window.location.href = `/api/users/export?${exportParams.toString()}`
             }}

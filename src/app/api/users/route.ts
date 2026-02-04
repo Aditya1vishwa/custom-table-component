@@ -11,11 +11,15 @@ export async function GET(request: NextRequest) {
   const sort_order = searchParams.get("sort_order") === "desc" ? "desc" : "asc"
   const filterStatus = searchParams.get("filter_status") ?? ""
   const filterRole = searchParams.get("filter_role") ?? ""
+  const filterDateFrom = searchParams.get("filter_dateFrom") ?? ""
+  const filterDateTo = searchParams.get("filter_dateTo") ?? ""
 
   const dataList = getFilteredUsers({
     search,
     status: filterStatus || undefined,
     role: filterRole || undefined,
+    dateFrom: filterDateFrom || undefined,
+    dateTo: filterDateTo || undefined,
     sortBy: sort_by,
     sortOrder: sort_order as "asc" | "desc",
   })
